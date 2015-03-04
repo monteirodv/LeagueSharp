@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Collision = LeagueSharp.Common.Collision;
 
-
-namespace Nautilus_AnchorTheChallengers
+namespace Nautilus_AnchorTheChallenger
 {
 
   class program
@@ -29,10 +28,13 @@ namespace Nautilus_AnchorTheChallengers
 
     private static Spell R;
 
-    public static SpellSlot smiteSlot = SpellSlot.Unknown;
-    public static Spell smite;
+    private static SpellSlot SmiteSlot = SpellSlot.Unknown;
 
-    // Kurisu
+    private static Spell Smite;
+
+
+    //Credits to Kurisu
+
     private static readonly int[] SmitePurple = { 3713, 3726, 3725, 3726, 3723 };
     private static readonly int[] SmiteGrey = { 3711, 3722, 3721, 3720, 3719 };
     private static readonly int[] SmiteRed = { 3715, 3718, 3717, 3716, 3714 };
@@ -80,6 +82,7 @@ namespace Nautilus_AnchorTheChallengers
 
     static void Game_OnGameLoad(EventArgs args)
     {
+      SetSmiteSlot();
 
       Game.PrintChat("<font color=\"#FF0000\">Nautilus - Anchor the Challenger by DanZ</font> - <font color=\"#0000FF\">Loaded</font>");
       if (ObjectManager.Player.BaseSkinName != Champion) return;
@@ -98,7 +101,6 @@ namespace Nautilus_AnchorTheChallengers
       SpellList.Add(E);
       SpellList.Add(R);
 
-      var SmiteSlot =  ObjectManager.Player.GetSpellSlot("summonerdot");
 
 
       RDO = new Items.Item(3143, 490f);
@@ -125,7 +127,7 @@ namespace Nautilus_AnchorTheChallengers
       Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("WJGClear", "Use W").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use W").SetValue(true));
-    //  Config.SubMenu("JGClear").AddItem(new MenuItem("AutoSmite", "AutoSmite").SetValue<KeyBind>(new KeyBind('G', KeyBindType.Toggle)));                
+      Config.SubMenu("JGClear").AddItem(new MenuItem("AutoSmite", "AutoSmite").SetValue<KeyBind>(new KeyBind('G', KeyBindType.Toggle)));                
 
       Config.AddSubMenu(new Menu("Mis Settings", "Misc"));
       Config.SubMenu("Misc").AddItem(new MenuItem("InterruptSpells", "Interrupt Spells with Q").SetValue(true));
@@ -154,7 +156,99 @@ namespace Nautilus_AnchorTheChallengers
 
     }
 
+    //Credits to Kurisu
+    private static string Smitetype()
+    {
+      if (SmiteBlue.Any(i => Items.HasItem(i)))
+      {
+        return "s5_summonersmiteplayerganker";
+      }
+      if (SmiteRed.Any(i => Items.HasItem(i)))
+      {
+        return "s5_summonersmiteduel";
+      }
+      if (SmiteGrey.Any(i => Items.HasItem(i)))
+      {
+        return "s5_summonersmitequick";
+      }
+      if (SmitePurple.Any(i => Items.HasItem(i)))
+      {
+        return "itemsmiteaoe";
+      }
+      return "summonersmite";
+    }
 
+
+
+    //Credits to metaphorce 
+    private static void SetSmiteSlot()
+    {
+      foreach (
+          var spell in
+              ObjectManager.Player.Spellbook.Spells.Where(
+                  spell => String.Equals(spell.Name, Smitetype(), StringComparison.CurrentCultureIgnoreCase)))
+      {
+        SmiteSlot = spell.Slot;
+        Smite = new Spell(SmiteSlot, 700);
+        return;
+      }
+    }
+    //New map Monsters Name By SKO
+    private static void Smiteuse()
+    {
+      var jungle = Config.Item("ActiveJungle").GetValue<KeyBind>().Active;
+      if (ObjectManager.Player.Spellbook.CanUseSpell(SmiteSlot) != SpellState.Ready) return;
+      var useblue = Config.Item("Useblue").GetValue<bool>();
+      var usered = Config.Item("Usered").GetValue<bool>();
+      var health = (100 * (Player.Mana / Player.MaxMana)) < Config.Item("healthJ").GetValue<Slider>().Value;
+      var mana = (100 * (Player.Mana / Player.MaxMana)) < Config.Item("manaJ").GetValue<Slider>().Value;
+      string[] jungleMinions;
+      if (Utility.Map.GetMap().Type.Equals(Utility.Map.MapType.TwistedTreeline))
+      {
+        jungleMinions = new string[] { "TT_Spiderboss", "TT_NWraith", "TT_NGolem", "TT_NWolf" };
+      }
+      else
+      {
+        jungleMinions = new string[]
+                {
+                    "SRU_Blue", "SRU_Gromp", "SRU_Murkwolf", "SRU_Razorbeak", "SRU_Red", "SRU_Krug", "SRU_Dragon",
+                    "SRU_Baron", "Sru_Crab"
+                };
+      }
+      var minions = MinionManager.GetMinions(Player.Position, 1000, MinionTypes.All, MinionTeam.Neutral);
+      if (minions.Count() > 0)
+      {
+        int smiteDmg = GetSmiteDmg();
+
+        foreach (Obj_AI_Base minion in minions)
+        {
+          if (Utility.Map.GetMap().Type.Equals(Utility.Map.MapType.TwistedTreeline) &&
+              minion.Health <= smiteDmg &&
+              jungleMinions.Any(name => minion.Name.Substring(0, minion.Name.Length - 5).Equals(name)))
+          {
+            ObjectManager.Player.Spellbook.CastSpell(SmiteSlot, minion);
+          }
+          if (minion.Health <= smiteDmg && jungleMinions.Any(name => minion.Name.StartsWith(name)) &&
+              !jungleMinions.Any(name => minion.Name.Contains("Mini")))
+          {
+            ObjectManager.Player.Spellbook.CastSpell(SmiteSlot, minion);
+          }
+          else if (jungle && useblue && mana && minion.Health >= smiteDmg &&
+                   jungleMinions.Any(name => minion.Name.StartsWith("SRU_Blue")) &&
+                   !jungleMinions.Any(name => minion.Name.Contains("Mini")))
+          {
+            ObjectManager.Player.Spellbook.CastSpell(SmiteSlot, minion);
+          }
+          else if (jungle && usered && health && minion.Health >= smiteDmg &&
+                   jungleMinions.Any(name => minion.Name.StartsWith("SRU_Red")) &&
+                   !jungleMinions.Any(name => minion.Name.Contains("Mini")))
+          {
+            ObjectManager.Player.Spellbook.CastSpell(SmiteSlot, minion);
+          }
+        }
+      }
+    }
+            
 
     private static void JungleClear()
     {
@@ -265,6 +359,13 @@ namespace Nautilus_AnchorTheChallengers
           {
             KSQ();
           }
+
+          if (Config.Item("AutoSmite").GetValue<KeyBind>().Active)
+          {
+            Smiteuse(); //Smite Function copied from xQx Assembly
+
+          }
+
       }
     }
 
