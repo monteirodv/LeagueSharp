@@ -11,7 +11,7 @@ using System.Threading;
 using Collision = LeagueSharp.Common.Collision;
 
 
-namespace Nautilus_AnchorTheChallenger
+namespace Nautilus_AnchorTheChallengers
 {
 
   class program
@@ -125,7 +125,7 @@ namespace Nautilus_AnchorTheChallenger
       Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("WJGClear", "Use W").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use W").SetValue(true));
-      Config.SubMenu("JGClear").AddItem(new MenuItem("AutoSmite", "AutoSmite").SetValue<KeyBind>(new KeyBind('G', KeyBindType.Toggle)));                
+    //  Config.SubMenu("JGClear").AddItem(new MenuItem("AutoSmite", "AutoSmite").SetValue<KeyBind>(new KeyBind('G', KeyBindType.Toggle)));                
 
       Config.AddSubMenu(new Menu("Mis Settings", "Misc"));
       Config.SubMenu("Misc").AddItem(new MenuItem("InterruptSpells", "Interrupt Spells with Q").SetValue(true));
