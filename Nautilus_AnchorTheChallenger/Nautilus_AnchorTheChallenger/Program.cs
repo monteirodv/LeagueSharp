@@ -31,7 +31,7 @@ namespace Nautilus_AnchorTheChallenger
     private static SpellSlot FlashSlot = SpellSlot.Unknown;
 
     public static float FlashRange = 450f;
-
+     
 
     private static List<Spell> SpellList = new List<Spell>();
 
@@ -83,7 +83,7 @@ namespace Nautilus_AnchorTheChallenger
       FlashSlot = Player.GetSpellSlot("SummonerFlash");
       Q = new Spell(SpellSlot.Q, 1100);
       W = new Spell(SpellSlot.W);
-      E = new Spell(SpellSlot.E, 600);
+      E = new Spell(SpellSlot.E, 300);
       R = new Spell(SpellSlot.R, 825);
 
       Q.SetSkillshot(1100f, 90, 2000, true, SkillshotType.SkillshotLine);
@@ -261,11 +261,9 @@ namespace Nautilus_AnchorTheChallenger
         case Orbwalking.OrbwalkingMode.LaneClear:
           JungleClear();
           break;
+          
       }
 
-
-
-      
 
 
           if (Config.Item("FlashQCombo").GetValue<KeyBind>().Active)
@@ -289,8 +287,8 @@ namespace Nautilus_AnchorTheChallenger
     private static void Combo() {
 
 
-			var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-			if (target == null) return;
+           var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
+	if (target == null) return;
 
 			//Combo
       if (Q.IsReady() && (Config.Item("UseQCombo").GetValue<bool>()))
