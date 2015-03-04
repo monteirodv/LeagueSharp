@@ -10,8 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Collision = LeagueSharp.Common.Collision;
 
-
-namespace Nautilus_AnchorTheChallengers
+namespace Nautilus_AnchorTheChallenger
 {
 
   class program
@@ -29,14 +28,10 @@ namespace Nautilus_AnchorTheChallengers
 
     private static Spell R;
 
-    public static SpellSlot smiteSlot = SpellSlot.Unknown;
-    public static Spell smite;
+    private static SpellSlot FlashSlot = SpellSlot.Unknown;
 
-    // Kurisu
-    private static readonly int[] SmitePurple = { 3713, 3726, 3725, 3726, 3723 };
-    private static readonly int[] SmiteGrey = { 3711, 3722, 3721, 3720, 3719 };
-    private static readonly int[] SmiteRed = { 3715, 3718, 3717, 3716, 3714 };
-    private static readonly int[] SmiteBlue = { 3706, 3710, 3709, 3708, 3707 };
+    public static float FlashRange = 450f;
+
 
     private static List<Spell> SpellList = new List<Spell>();
 
@@ -85,6 +80,7 @@ namespace Nautilus_AnchorTheChallengers
       if (ObjectManager.Player.BaseSkinName != Champion) return;
 
 
+      FlashSlot = Player.GetSpellSlot("SummonerFlash");
       Q = new Spell(SpellSlot.Q, 1100);
       W = new Spell(SpellSlot.W);
       E = new Spell(SpellSlot.E, 600);
@@ -98,7 +94,6 @@ namespace Nautilus_AnchorTheChallengers
       SpellList.Add(E);
       SpellList.Add(R);
 
-      var SmiteSlot =  ObjectManager.Player.GetSpellSlot("summonerdot");
 
 
       RDO = new Items.Item(3143, 490f);
@@ -121,11 +116,10 @@ namespace Nautilus_AnchorTheChallengers
       Config.SubMenu("Combo").AddItem(new MenuItem("UseItems", "Use Items")).SetValue(true); //Adding an item to the submenu (toggle)
       Config.SubMenu("Combo").AddItem(new MenuItem("KSQ", "KS with Q")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("ActiveCombo", "Combo!").SetValue(new KeyBind(32, KeyBindType.Press))); //Adding an item to the submenu (on key down (hotkey))
-      
+      Config.SubMenu("Combo").AddItem(new MenuItem("FlashQCombo", "Flash + Q Combo").SetValue(new KeyBind("G".ToCharArray()[0], KeyBindType.Press)));
       Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("WJGClear", "Use W").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use W").SetValue(true));
-    //  Config.SubMenu("JGClear").AddItem(new MenuItem("AutoSmite", "AutoSmite").SetValue<KeyBind>(new KeyBind('G', KeyBindType.Toggle)));                
 
       Config.AddSubMenu(new Menu("Mis Settings", "Misc"));
       Config.SubMenu("Misc").AddItem(new MenuItem("InterruptSpells", "Interrupt Spells with Q").SetValue(true));
@@ -156,6 +150,30 @@ namespace Nautilus_AnchorTheChallengers
 
 
 
+    private static void FlashQCombo()
+    {
+
+      ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+      var target = TargetSelector.GetTarget(Q.Range + FlashRange - 25, TargetSelector.DamageType.Magical);
+
+        if (Player.Distance3D(target) > Q.Range)
+      {
+        if (FlashSlot != SpellSlot.Unknown && Player.Spellbook.CanUseSpell(FlashSlot) == SpellState.Ready)
+        {
+          if (Q.IsReady())
+          {
+            Player.Spellbook.CastSpell(FlashSlot, target.ServerPosition);
+            Q.Cast(target.ServerPosition);
+          }
+          else
+          {
+            Q.StartCharging();
+          }
+        }
+      }
+    }
+            
+
     private static void JungleClear()
     {
       var mobs = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, E.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
@@ -176,13 +194,7 @@ namespace Nautilus_AnchorTheChallengers
     }
 
 
-            private static int GetSmiteDmg()
-        {
-            int level = Player.Level;
-            int index = Player.Level/5;
-            float[] dmgs = {370 + 20*level, 330 + 30*level, 240 + 40*level, 100 + 50*level};
-            return (int) dmgs[index];
-        }
+
 
       
     
@@ -246,27 +258,30 @@ namespace Nautilus_AnchorTheChallengers
         case Orbwalking.OrbwalkingMode.Combo:
           Combo();
           break;
-        case Orbwalking.OrbwalkingMode.Mixed:
-          JungleClear();
-          break;
         case Orbwalking.OrbwalkingMode.LaneClear:
           JungleClear();
           break;
-
-        default:
-          break;
+      }
 
 
 
+      
 
+
+          if (Config.Item("FlashQCombo").GetValue<KeyBind>().Active)
+          {
+            FlashQCombo();
+          }
 
 
           if (Config.Item("KSQ").GetValue<bool>())
           {
             KSQ();
           }
+
+
       }
-    }
+    
 
     
 
