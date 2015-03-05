@@ -138,7 +138,7 @@ Notifications.AddNotification("Nautilus- Anchor the Challenger by Danz - Loaded"
 
       Config.AddToMainMenu();
 
-      Game.OnGameUpdate += OnGameUpdate;
+Game.OnUpdate += OnGameUpdate;
       Drawing.OnDraw += OnDraw;
       AntiGapcloser.OnEnemyGapcloser += WEOnEnemyGapcloser;
       Interrupter.OnPossibleToInterrupt += Interrupter_OnPossibleToInterrupt;
