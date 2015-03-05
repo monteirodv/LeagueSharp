@@ -75,8 +75,8 @@ namespace Nautilus_AnchorTheChallenger
 
     static void Game_OnGameLoad(EventArgs args)
     {
+Notifications.AddNotification("Nautilus- Anchor the Challenger by Danz - Loaded", 1000);
 
-      Game.PrintChat("<font color=\"#FF0000\">Nautilus - Anchor the Challenger by DanZ</font> - <font color=\"#0000FF\">Loaded</font>");
       if (ObjectManager.Player.BaseSkinName != Champion) return;
 
 
