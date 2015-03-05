@@ -330,6 +330,8 @@ namespace Nautilus_AnchorTheChallenger
 
 
     private static void KSQ() {
+      foreach(Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(unit => unit.IsValidTarget(Q.Range)))
+         {
 			var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
 			if (target == null) return;
 
@@ -342,7 +344,7 @@ namespace Nautilus_AnchorTheChallenger
 						Q.Cast(prediction.CastPosition);
 					}
 
-
+        }
 				}
 			}
 		}

@@ -1,0 +1,12 @@
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\Nautilus_AnchorTheChallenger.exe.config
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\Nautilus_AnchorTheChallenger.exe
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\Nautilus_AnchorTheChallenger.pdb
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\LeagueSharp.Common.dll
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\LeagueSharp.dll
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\SharpDX.dll
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\clipper_library.dll
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\bin\Release\LeagueSharp.xml
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\obj\Debug\Nautilus_AnchorTheChallenger.csprojResolveAssemblyReference.cache
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\obj\Debug\Nautilus_AnchorTheChallenger.exe
+C:\Users\Dan\Documents\GitHub\LeagueSharp\Nautilus_AnchorTheChallenger\Nautilus_AnchorTheChallenger\obj\Debug\Nautilus_AnchorTheChallenger.pdb
