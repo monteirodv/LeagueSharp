@@ -217,7 +217,7 @@ Game.OnUpdate += OnGameUpdate;
         var mob = mobs[0];
         if (Q.IsReady() && Config.Item("WJGClear").GetValue<bool>())
         {
-          Q.Cast();
+          Q.Cast(mob);
         }
 
         if (W.IsReady() && Config.Item("WJGClear").GetValue<bool>())
