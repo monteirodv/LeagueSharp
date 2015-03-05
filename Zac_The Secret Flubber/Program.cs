@@ -149,6 +149,15 @@ Game.OnUpdate += OnGameUpdate;
 
       }
     }
+
+    static void Obj_AI_Hero_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args)
+    {
+      if (E.IsCharging)
+      {
+        args.Process = false;
+      }
+    }
+
     private static void Harass()
     {
       var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
