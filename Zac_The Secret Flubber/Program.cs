@@ -217,7 +217,7 @@ Game.OnUpdate += OnGameUpdate;
         var mob = mobs[0];
         if (Q.IsReady() && Config.Item("WJGClear").GetValue<bool>())
         {
-          Q.Cast(mobs);
+          Q.Cast();
         }
 
         if (W.IsReady() && Config.Item("WJGClear").GetValue<bool>())
@@ -227,7 +227,7 @@ Game.OnUpdate += OnGameUpdate;
 
         if (E.IsReady() && Config.Item("EJGClear").GetValue<bool>())
         {
-          E.Cast(mobs);
+          E.Cast();
         }
       }
     }
