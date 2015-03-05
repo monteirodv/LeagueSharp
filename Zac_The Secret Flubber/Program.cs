@@ -86,7 +86,7 @@ namespace Zac_The_Secret_Flubber
       Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true); 
       Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
-      Config.AddSubMenu(new Menu("Jungle / Lane Clear", "JGClear"));
+      Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("QJGClear", "Use Q").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("WJGClear", "Use W").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use E").SetValue(false));
@@ -231,6 +231,13 @@ Game.OnUpdate += OnGameUpdate;
         }
       }
     }
+
+   // private static void LaneClear()
+    
+
+
+
+
 
     private static void OnDraw(EventArgs args)
     {
