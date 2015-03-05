@@ -124,7 +124,7 @@ Game.OnUpdate += OnGameUpdate;
       }
       if (W.IsReady() && Config.Item("UseWCombo").GetValue<bool>() && target.IsValidTarget(W.Range))
       {
-        W.Cast(target);
+        W.Cast();
       }
       if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && target.IsValidTarget(E.Range))
       {
