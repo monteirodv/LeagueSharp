@@ -93,7 +93,7 @@ namespace Zac_The_Secret_Flubber
       Config.AddSubMenu(new Menu("Harass", "Harass"));
       Config.SubMenu("Harass").AddItem(new MenuItem("UseQHarass", "Use Q")).SetValue(true);
       Config.SubMenu("Harass").AddItem(new MenuItem("UseWHarass", "Use W")).SetValue(true);
-      Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E")).SetValue(true);
+      Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E")).SetValue(false);
       Config.AddSubMenu(new Menu("Mis Settings", "Misc"));
       Config.SubMenu("Misc").AddItem(new MenuItem("KSQ", "KS with Q")).SetValue(true);
       Config.AddSubMenu(new Menu("Drawings", "Drawings"));
