@@ -18,13 +18,7 @@ namespace Zac_The_Secret_Flubber
 
     private static Orbwalking.Orbwalker Orbwalker;
 
-    private static Spell Q;
-
-    private static Spell W;
-
-    private static Spell E;
-
-    private static Spell R;
+    private static Spell Q, W, E, R;
 
     private static List<Spell> SpellList = new List<Spell>();
 
@@ -63,7 +57,7 @@ namespace Zac_The_Secret_Flubber
 
     static void Game_OnGameLoad(EventArgs args)
     {
-      Game.PrintChat("<font color=\"#FF0000\">Zac - The Secret Flubber by DanZ and Drunkenninja</font> - <font color=\"#0000FF\">Loaded</font>");
+          Notifications.AddNotification("Zac - The Secret Flubber by DanZ and Drunkenninja", 1000);
       if (ObjectManager.Player.BaseSkinName != Champion) return;
 
       Q = new Spell(SpellSlot.Q, 550);
