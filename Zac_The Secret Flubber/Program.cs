@@ -136,8 +136,7 @@ Game.OnUpdate += OnGameUpdate;
         }
         else
         {
-          Orbwalker.SetAttack(false);
-          Orbwalker.SetMovement(false);
+
           E.StartCharging();
 
           if (R.IsReady() && Config.Item("UseRCombo").GetValue<bool>())
