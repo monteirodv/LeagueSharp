@@ -172,7 +172,7 @@ Game.OnUpdate += OnGameUpdate;
       {
         if (E.IsCharging)
         {
-          E.Cast(target);
+          E.Cast(target, true);
         }
         else
         {
