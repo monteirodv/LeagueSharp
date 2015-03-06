@@ -130,7 +130,7 @@ Game.OnUpdate += OnGameUpdate;
       {
         if (E.IsCharging)
         {
-          E.Cast(target, false);
+          E.Cast(target);
         }
         else
         {
@@ -150,13 +150,7 @@ Game.OnUpdate += OnGameUpdate;
       }
     }
 
-    static void Obj_AI_Hero_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args)
-    {
-      if (E.IsCharging)
-      {
-        args.Process = false;
-      }
-    }
+
 
     private static void Harass()
     {
@@ -279,6 +273,7 @@ Game.OnUpdate += OnGameUpdate;
 
 private static void OnGameUpdate(EventArgs args)
     {
+
       if (E.IsCharging)
       {
         Orbwalker.SetMovement(false);
