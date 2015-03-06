@@ -130,10 +130,14 @@ Game.OnUpdate += OnGameUpdate;
       {
         if (E.IsCharging)
         {
+          Orbwalker.SetAttack(false);
+          Orbwalker.SetMovement(false);
           E.Cast(target);
         }
         else
         {
+          Orbwalker.SetAttack(false);
+          Orbwalker.SetMovement(false);
           E.StartCharging();
 
           if (R.IsReady() && Config.Item("UseRCombo").GetValue<bool>())
@@ -277,6 +281,7 @@ private static void OnGameUpdate(EventArgs args)
       if (E.IsCharging)
       {
         Orbwalker.SetMovement(false);
+        
       }
 
       switch (Orbwalker.ActiveMode)
