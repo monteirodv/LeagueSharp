@@ -292,8 +292,10 @@ private static void OnGameUpdate(EventArgs args)
           Harass();
           break;
 
-    
-          
+          if (E.IsCharging)
+          {
+            Orbwalker.SetMovement(false);
+          }
       }
 
       }

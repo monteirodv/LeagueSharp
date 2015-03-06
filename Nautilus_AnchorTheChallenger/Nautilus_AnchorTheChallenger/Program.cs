@@ -28,9 +28,29 @@ namespace Nautilus_AnchorTheChallenger
 
     private static Spell R;
 
+
     private static SpellSlot FlashSlot = SpellSlot.Unknown;
 
     public static float FlashRange = 450f;
+    private static SpellSlot smiteSlot;
+
+    private static bool checkSmite = false;
+
+    public static Obj_AI_Base minion;
+
+    private static readonly string[] epics =
+        {
+            "SRU_Baron", "SRU_Dragon"
+        };
+    private static readonly string[] buffs =
+        {
+            "SRU_Red", "SRU_Blue"
+        };
+    private static readonly string[] buffandepics =
+        {
+            "SRU_Red", "SRU_Blue", "SRU_Dragon", "SRU_Baron"
+        };
+
      
 
     private static List<Spell> SpellList = new List<Spell>();
@@ -125,7 +145,16 @@ Notifications.AddNotification("Nautilus- Anchor the Challenger by Danz - Loaded"
       Config.SubMenu("Misc").AddItem(new MenuItem("InterruptSpells", "Interrupt Spells with Q").SetValue(true));
       Config.SubMenu("Misc").AddItem(new MenuItem("WGapCloser", "Auto use W on Gap Closers").SetValue(true));
       Config.SubMenu("Misc").AddItem(new MenuItem("EGapCloser", "Auto use E on Gap Closers").SetValue(true));
+      //ElRengar.SmiteSettinsg
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("smiteEnabled", "Auto smite enabled").SetValue(new KeyBind("M".ToCharArray()[0], KeyBindType.Toggle)));
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("422442fsaafsf", ""));
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("Selected Smite Targets", "Selected Smite Targets:"));
 
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("SRU_Red", "Red Buff").SetValue(true));
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("SRU_Blue", "Blue Buff").SetValue(true));
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("SRU_Dragon", "Dragon").SetValue(true));
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("SRU_Baron", "Baron").SetValue(true));
+            Config.SubMenu("Smite Settings").AddItem(new MenuItem("normalSmite", "Normal Smite").SetValue(true));
 
 
       Config.AddSubMenu(new Menu("Drawings", "Drawings"));
@@ -141,7 +170,9 @@ Notifications.AddNotification("Nautilus- Anchor the Challenger by Danz - Loaded"
 Game.OnUpdate += OnGameUpdate;
       Drawing.OnDraw += OnDraw;
       AntiGapcloser.OnEnemyGapcloser += WEOnEnemyGapcloser;
-      Interrupter.OnPossibleToInterrupt += Interrupter_OnPossibleToInterrupt;
+      Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
+
+      
 
       
 
@@ -196,13 +227,13 @@ Game.OnUpdate += OnGameUpdate;
 
 
 
-      
-    
 
-    private static void Interrupter_OnPossibleToInterrupt(Obj_AI_Hero unit, InterruptableSpell spell)
+    //    private static void Interrupter2_OnInterruptableTarget(Obj_AI_Hero unit, InterruptableSpell spell)
+
+    private static void Interrupter2_OnInterruptableTarget(Obj_AI_Hero unit, Interrupter2.InterruptableTargetEventArgs spell)
     {
       if (Config.Item("InterruptSpells").GetValue<bool>())
-      {
+      { 
         if (Q.IsInRange(unit) && Q.IsReady() && unit.IsEnemy)
         {
           Q.CastOnUnit(unit);
@@ -222,6 +253,14 @@ Game.OnUpdate += OnGameUpdate;
       }
     }
 
+    private static double SmiteDmg()
+    {
+      int[] dmg =
+            {
+                20*Player.Level + 370, 30*Player.Level + 330, 40*+Player.Level + 240, 50*Player.Level + 100
+            };
+      return Player.Spellbook.CanUseSpell(smiteSlot) == SpellState.Ready ? dmg.Max() : 0;
+    }
 
     private static void OnDraw(EventArgs args)
     {
@@ -248,10 +287,54 @@ Game.OnUpdate += OnGameUpdate;
       }
     }
 
+     //   private static void smiter()
+       // {
+            //var minion = ObjectManager.Get<Obj_AI_Minion>().Where(a => buffandepics.Contains(a.BaseSkinName) && a.Distance(Player) <= 1300).FirstOrDefault();
+         //   var minion = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(a => buffandepics.Contains(a.BaseSkinName) && a.Distance(Player) <= 1300);
+           // if (minion != null)
+            //{
+              //  if (Config.Item(minion.BaseSkinName).GetValue<bool>())
+                //{
+                  //  if (minion.Distance(Player) < 100 && checkSmite)
+                    //{
+                      //  checkSmite = false;
+                        //Player.Spellbook.CastSpell(smiteSlot, minion);
+                    //}
 
+               // }
+            //}
+        //}
+
+        //Credits to Kurisu
+
+        private static readonly int[] SmitePurple = { 3713, 3726, 3725, 3726, 3723 };
+        private static readonly int[] SmiteGrey = { 3711, 3722, 3721, 3720, 3719 };
+        private static readonly int[] SmiteRed = { 3715, 3718, 3717, 3716, 3714 };
+        private static readonly int[] SmiteBlue = { 3706, 3710, 3709, 3708, 3707 };
+        private static string smitetype()
+        {
+          if (SmiteBlue.Any(a => Items.HasItem(a)))
+          {
+            return "s5_summonersmiteplayerganker";
+          }
+          if (SmiteRed.Any(a => Items.HasItem(a)))
+          {
+            return "s5_summonersmiteduel";
+          }
+          if (SmiteGrey.Any(a => Items.HasItem(a)))
+          {
+            return "s5_summonersmitequick";
+          }
+          if (SmitePurple.Any(a => Items.HasItem(a)))
+          {
+            return "itemsmiteaoe";
+          }
+          return "summonersmite";
+        }
 
     private static void OnGameUpdate(EventArgs args)
     {
+      smiteSlot = Player.GetSpellSlot(smitetype());
 
       switch (Orbwalker.ActiveMode)
       {
