@@ -84,16 +84,13 @@ namespace Zac_The_Secret_Flubber
       Config.AddSubMenu(new Menu("Combo", "Combo"));
       Config.SubMenu("Combo").AddItem(new MenuItem("UseQCombo", "Use Q")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
-      Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true); 
       Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
       Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("QJGClear", "Use Q").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("WJGClear", "Use W").SetValue(true));
-      Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use E").SetValue(false));
       Config.AddSubMenu(new Menu("Harass", "Harass"));
       Config.SubMenu("Harass").AddItem(new MenuItem("UseQHarass", "Use Q")).SetValue(true);
       Config.SubMenu("Harass").AddItem(new MenuItem("UseWHarass", "Use W")).SetValue(true);
-      Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E")).SetValue(false);
       Config.AddSubMenu(new Menu("Mis Settings", "Misc"));
       Config.SubMenu("Misc").AddItem(new MenuItem("KSQ", "KS with Q")).SetValue(true);
       Config.AddSubMenu(new Menu("Drawings", "Drawings"));
@@ -126,19 +123,7 @@ Game.OnUpdate += OnGameUpdate;
       {
         W.Cast();
       }
-      if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && target.IsValidTarget(E.Range))
-      {
-        if (E.IsCharging)
-        {
-
-          E.Cast(target);
-        }
-        else
-        {
-
-          E.StartCharging();
-
-          if (R.IsReady() && Config.Item("UseRCombo").GetValue<bool>())
+ if (R.IsReady() && Config.Item("UseRCombo").GetValue<bool>())
             if (Q.IsReady())
             {
               return;
@@ -149,8 +134,8 @@ Game.OnUpdate += OnGameUpdate;
             }
         }
 
-      }
-    }
+      
+    
 
 
 
@@ -170,17 +155,8 @@ Game.OnUpdate += OnGameUpdate;
       {
         W.Cast(target);
       }
-      if (E.IsReady() && Config.Item("UseEHarass").GetValue<bool>() && target.IsValidTarget(E.Range))
-      {
-        if (E.IsCharging)
-        {
-          E.Cast(target, true);
-        }
-        else
-        {
-          E.StartCharging();
-        }
-      }
+
+      
 
 
     }
@@ -230,10 +206,7 @@ Game.OnUpdate += OnGameUpdate;
           W.Cast();
         }
 
-        if (E.IsReady() && Config.Item("EJGClear").GetValue<bool>())
-        {
-          E.Cast();
-        }
+        
       }
     }
 
