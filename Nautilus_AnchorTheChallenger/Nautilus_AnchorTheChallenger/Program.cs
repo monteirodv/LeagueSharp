@@ -287,23 +287,22 @@ Game.OnUpdate += OnGameUpdate;
       }
     }
 
-     //   private static void smiter()
-       // {
-            //var minion = ObjectManager.Get<Obj_AI_Minion>().Where(a => buffandepics.Contains(a.BaseSkinName) && a.Distance(Player) <= 1300).FirstOrDefault();
-         //   var minion = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(a => buffandepics.Contains(a.BaseSkinName) && a.Distance(Player) <= 1300);
-           // if (minion != null)
-            //{
-              //  if (Config.Item(minion.BaseSkinName).GetValue<bool>())
-                //{
-                  //  if (minion.Distance(Player) < 100 && checkSmite)
-                    //{
-                      //  checkSmite = false;
-                        //Player.Spellbook.CastSpell(smiteSlot, minion);
-                    //}
+      private static void smiter()
+        {
+            var minion = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(a => buffandepics.Contains(a.BaseSkinName));
+            if (minion != null)
+            {
+                if (Config.Item(minion.BaseSkinName).GetValue<bool>())
+                {
+                    if (minion.Distance(Player) < 100 && checkSmite)
+                    {
+                        checkSmite = false;
+                        Player.Spellbook.CastSpell(smiteSlot, minion);
+                    }
 
-               // }
-            //}
-        //}
+                }
+           }
+        }
 
         //Credits to Kurisu
 

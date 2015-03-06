@@ -279,21 +279,30 @@ Game.OnUpdate += OnGameUpdate;
 
 private static void OnGameUpdate(EventArgs args)
     {
-      if (E.IsCharging)
-      {
-        Orbwalker.SetMovement(false);
-      }
+
 
       switch (Orbwalker.ActiveMode)
       {
         case Orbwalking.OrbwalkingMode.Combo:
           Combo();
+          if (E.IsCharging)
+          {
+            Orbwalker.SetMovement(false);
+          }
           break;
         case Orbwalking.OrbwalkingMode.LaneClear:
           JungleClear();
+          if (E.IsCharging)
+          {
+            Orbwalker.SetMovement(false);
+          }
           break;
         case Orbwalking.OrbwalkingMode.Mixed:
           Harass();
+          if (E.IsCharging)
+          {
+            Orbwalker.SetMovement(false);
+          }
           break;
 
 
