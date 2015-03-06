@@ -130,8 +130,7 @@ Game.OnUpdate += OnGameUpdate;
       {
         if (E.IsCharging)
         {
-          Orbwalker.SetAttack(false);
-          Orbwalker.SetMovement(false);
+
           E.Cast(target);
         }
         else
