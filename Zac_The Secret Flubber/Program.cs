@@ -279,6 +279,10 @@ Game.OnUpdate += OnGameUpdate;
 
 private static void OnGameUpdate(EventArgs args)
     {
+      if (E.IsCharging)
+      {
+        Orbwalker.SetMovement(false);
+      }
 
       switch (Orbwalker.ActiveMode)
       {
@@ -292,10 +296,7 @@ private static void OnGameUpdate(EventArgs args)
           Harass();
           break;
 
-          if (E.IsCharging)
-          {
-            Orbwalker.SetMovement(false);
-          }
+
       }
 
       }
