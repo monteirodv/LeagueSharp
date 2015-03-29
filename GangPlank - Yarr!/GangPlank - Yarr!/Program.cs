@@ -13,7 +13,7 @@ namespace GangPlank___Yarr_
 {
   class Program
   {
-    // private const string Champion = "GangPlank";
+     private const string Champion = "GangPlank";
 
     private static Orbwalking.Orbwalker Orbwalker;
 
@@ -139,7 +139,7 @@ namespace GangPlank___Yarr_
 
     private static void Combo()
     {
-      var target = TargetSelector.GetTarget(700, TargetSelector.DamageType.Physical);
+      var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
       if (target == null) return;
 
       var useQ = Config.Item("UseQCombo").GetValue<bool>();
