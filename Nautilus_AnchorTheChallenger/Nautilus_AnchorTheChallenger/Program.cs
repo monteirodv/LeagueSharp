@@ -104,9 +104,10 @@ Notifications.AddNotification("Nautilus- Anchor the Challenger by Danz - Loaded"
       Q = new Spell(SpellSlot.Q, 1100);
       W = new Spell(SpellSlot.W);
       E = new Spell(SpellSlot.E, 300);
-      R = new Spell(SpellSlot.R, 825);
+      R = new Spell(SpellSlot.R, 1500);
 
-      Q.SetSkillshot(1100f, 90, 2000, true, SkillshotType.SkillshotLine);
+      
+     Q.SetSkillshot(1100f, 90, 2000, true, SkillshotType.SkillshotLine);
 
 
       SpellList.Add(Q);
@@ -167,7 +168,7 @@ Notifications.AddNotification("Nautilus- Anchor the Challenger by Danz - Loaded"
 
       Config.AddToMainMenu();
 
-Game.OnUpdate += OnGameUpdate;
+      Game.OnUpdate += OnGameUpdate;
       Drawing.OnDraw += OnDraw;
       AntiGapcloser.OnEnemyGapcloser += WEOnEnemyGapcloser;
       Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
@@ -287,22 +288,6 @@ Game.OnUpdate += OnGameUpdate;
       }
     }
 
-      private static void smiter()
-        {
-            var minion = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(a => buffandepics.Contains(a.BaseSkinName));
-            if (minion != null)
-            {
-                if (Config.Item(minion.BaseSkinName).GetValue<bool>())
-                {
-                    if (minion.Distance(Player) < 100 && checkSmite)
-                    {
-                        checkSmite = false;
-                        Player.Spellbook.CastSpell(smiteSlot, minion);
-                    }
-
-                }
-           }
-        }
 
         //Credits to Kurisu
 
@@ -392,6 +377,11 @@ Game.OnUpdate += OnGameUpdate;
         if (target.IsValidTarget(E.Range) && E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
         {
           E.Cast(target, true, true);
+        }
+
+        if (target.IsValidTarget(R.Range) && R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()))
+        {
+          R.Cast(target, true, true);
         }
 
 
