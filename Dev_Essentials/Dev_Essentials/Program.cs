@@ -40,6 +40,8 @@ namespace Dev_Essentials
 
       Notifications.AddNotification("Dev Essentials by DanZ and DrunkenNinja loaded", 3000);
       Config = new Menu("DevEssentials", "Dev Essentials", true);
+      Config.SubMenu("DevEssentials").AddItem(new MenuItem("ActiveConsole", "Write to Console").SetValue(new KeyBind("G".ToCharArray()[0], KeyBindType.Press)));
+
 
 
 
@@ -63,6 +65,7 @@ namespace Dev_Essentials
         temp += (buff.DisplayName + "(" + buff.Count + ")" + ", ");
       }
 
+
       SpellDataInst spellQ = Player.Spellbook.GetSpell(SpellSlot.Q);
       SpellData dataQ = Player.Spellbook.GetSpell(SpellSlot.Q).SData;
       SpellDataInst spellW = Player.Spellbook.GetSpell(SpellSlot.W);
@@ -72,6 +75,37 @@ namespace Dev_Essentials
       SpellDataInst spellR = Player.Spellbook.GetSpell(SpellSlot.R);
       SpellData dataR = Player.Spellbook.GetSpell(SpellSlot.R).SData;
 
+      if (Config.Item("ActiveConsole").GetValue<KeyBind>().Active)
+      {
+        Console.WriteLine("Coordinates:" + Player.Position.ToString());
+        Console.Write("Gold Earned: " + Player.GoldEarned.ToString());
+        Console.Write("Attack Delay: " + Player.AttackDelay.ToString());
+        Console.Write("Chance of Critical: " + PlayerCrit);
+        Console.Write("Wards Destroyed: ", Player.WardsKilled.ToString());
+        Console.Write("Wards Placed: ", Player.WardsPlaced.ToString());
+        Console.Write("Wards Bought: ", Player.SightWardsBought + Player.VisionWardsBought.ToString());
+        Console.Write("Last SpellCasted" + Player.LastCastedSpellName());
+        Console.Write("Player Direction:" + Player.Direction.ToString());
+        Console.Write("Base AD: " + Player.BaseAttackDamage.ToString());
+        Console.Write("Base AP: " + Player.BaseAbilityDamage.ToString());
+        Console.Write("Experience: " + Player.Experience.ToString());
+        Console.Write("Cursor Position: " + Game.CursorPos.ToString());
+        Console.Write("Buffs: " + temp.ToString());
+        Console.Write("Q Name:" + spellQ.Name.ToString());
+        Console.Write("Q Level:" + spellQ.Level.ToString());
+        Console.Write("Q Range:" + spellQ.SData.CastRange.ToString());
+        Console.Write("W Name:" + spellW.Name.ToString());
+        Console.Write("W Level:" + spellW.Level.ToString());
+        Console.Write("W Range:" + spellW.SData.CastRange.ToString());
+        Console.Write("E Name:" + spellE.Name.ToString());
+        Console.Write("E Level:" + spellE.Level.ToString());
+        Console.Write("E Range:" + spellE.SData.CastRange.ToString());
+        Console.Write("R Name:" + spellR.Name.ToString());
+        Console.Write("R Level:" + spellR.Level.ToString());
+        Console.Write("R Range:" + spellR.SData.CastRange.ToString());
+
+
+      }
       Drawing.DrawText(10, 0, Color.Red, "Dev Essentials v0.1 by DanZ and DrunkenNinja ");
       Drawing.DrawText(10, 10, Color.White, "Coordinates:");
       Drawing.DrawText(10, 25, Color.White, Player.Position.ToString());
@@ -190,6 +224,10 @@ namespace Dev_Essentials
       Drawing.DrawText(390, 330, Color.Red, "|");
       Drawing.DrawText(390, 335, Color.Red, "|");
       Drawing.DrawText(390, 340, Color.Red, "|");
+
+
+
+
     }
 
 
