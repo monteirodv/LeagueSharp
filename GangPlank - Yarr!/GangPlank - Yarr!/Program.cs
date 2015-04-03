@@ -63,7 +63,8 @@ namespace GangPlank___Yarr_
       Config.SubMenu("Combo").AddItem(new MenuItem("UseQCombo", "Use Q")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R on target")).SetValue(false);
-
+      Config.AddSubMenu(new Menu("Farming", "Farming"));
+      Config.SubMenu("Farming").AddItem(new MenuItem("QFarm", "Last hit with Q").SetValue(new KeyBind("A".ToCharArray()[0], KeyBindType.Toggle)));
       Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("QJGClear", "Use Q").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use E").SetValue(true));
@@ -137,6 +138,16 @@ namespace GangPlank___Yarr_
       }
     }
 
+    //Credits to DanThePman
+    private static void farmQ()
+    {
+      foreach (var minion in MinionManager.GetMinions(625f, MinionTypes.All, MinionTeam.Enemy).
+                           Where(x => Q.GetDamage(x) >= x.Health))
+      {
+        if (Q.CanCast(minion))
+          Q.CastOnUnit(minion, true);
+      }
+    }
     private static void Combo()
     {
       var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
@@ -145,7 +156,7 @@ namespace GangPlank___Yarr_
       var useQ = Config.Item("UseQCombo").GetValue<bool>();
       if (Q.IsReady() && Config.Item("UseQCombo").GetValue<bool>() && target.IsValidTarget(Q.Range))
       {
-        Q.Cast(target);
+        Q.CastOnUnit(target);
       }
       if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>())
       {
@@ -163,7 +174,7 @@ namespace GangPlank___Yarr_
 
       if (Q.IsReady() && Config.Item("UseQCombo").GetValue<bool>() && target.IsValidTarget(Q.Range))
       {
-        Q.Cast(target);
+        Q.CastOnUnit(target);
       }
     }
     private static void jgClear()
@@ -174,7 +185,7 @@ namespace GangPlank___Yarr_
         var mob = mobs[0];
         if (Q.IsReady() && Config.Item("QJGClear").GetValue<bool>())
         {
-          Q.Cast(mob);
+          Q.CastOnUnit(mob);
         }
 
         if (W.IsReady() && Config.Item("EJGClear").GetValue<bool>())
@@ -209,7 +220,7 @@ namespace GangPlank___Yarr_
 
 					if (target.Health < GetQDamage(target)) {
 
-						Q.Cast(target);
+						Q.CastOnUnit(target);
 
 
 					}
