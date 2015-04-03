@@ -64,7 +64,7 @@ namespace GangPlank___Yarr_
       Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R on target")).SetValue(false);
       Config.AddSubMenu(new Menu("Farming", "Farming"));
-      Config.SubMenu("Farming").AddItem(new MenuItem("QFarm", "Last hit with Q").SetValue(new KeyBind("A".ToCharArray()[0], KeyBindType.Toggle)));
+      Config.SubMenu("Farming").AddItem(new MenuItem("QFarm", "Last hit with Q").SetValue(false));
       Config.AddSubMenu(new Menu("Jungle Clear", "JGClear"));
       Config.SubMenu("JGClear").AddItem(new MenuItem("QJGClear", "Use Q").SetValue(true));
       Config.SubMenu("JGClear").AddItem(new MenuItem("EJGClear", "Use E").SetValue(true));
@@ -114,7 +114,7 @@ namespace GangPlank___Yarr_
 
     private static void OnGameUpdate(EventArgs args)
     {
-      if (Config.Item("Qfarm").GetValue<KeyBind>().Active)
+      if (Config.Item("Qfarm").GetValue<bool>())
       {
         farmQ();
       }
