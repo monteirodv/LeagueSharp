@@ -114,6 +114,10 @@ namespace GangPlank___Yarr_
 
     private static void OnGameUpdate(EventArgs args)
     {
+      if (Config.Item("Qfarm").GetValue<KeyBind>().Active)
+      {
+        farmQ();
+      }
       if (Config.Item("KSQ").GetValue<bool>())
       {
         KSQ();
@@ -148,6 +152,7 @@ namespace GangPlank___Yarr_
           Q.CastOnUnit(minion, true);
       }
     }
+
     private static void Combo()
     {
       var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
