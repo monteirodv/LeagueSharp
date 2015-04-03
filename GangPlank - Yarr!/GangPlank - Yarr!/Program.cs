@@ -114,7 +114,7 @@ namespace GangPlank___Yarr_
 
     private static void OnGameUpdate(EventArgs args)
     {
-      if (Config.Item("Qfarm").GetValue<bool>())
+      if (Config.Item("QFarm").GetValue<bool>())
       {
         farmQ();
       }
