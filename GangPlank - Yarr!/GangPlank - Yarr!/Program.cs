@@ -44,7 +44,7 @@ namespace GangPlank___Yarr_
       Q = new Spell(SpellSlot.Q, 625);
       W = new Spell(SpellSlot.W);
       E = new Spell(SpellSlot.E, 1250);
-      R = new Spell(SpellSlot.R, float.MaxValue);
+      R = new Spell(SpellSlot.R);
 
       R.SetSkillshot(0.7f, 200, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
@@ -155,14 +155,21 @@ namespace GangPlank___Yarr_
 
     private static void Combo()
     {
-      var target = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-      if (target == null) return;
+      var target = (TargetSelector.GetTarget(1000, TargetSelector.DamageType.Physical) ??
+                     TargetSelector.GetTarget(1000, TargetSelector.DamageType.Magical)) ?? TargetSelector.GetTarget(1000, TargetSelector.DamageType.True);                    
 
-      var useQ = Config.Item("UseQCombo").GetValue<bool>();
-      if (Q.IsReady() && Config.Item("UseQCombo").GetValue<bool>() && target.IsValidTarget(Q.Range))
+      if (target == null)
       {
-        Q.CastOnUnit(target);
-      }
+        return;
+        }
+
+      if (Q.IsReady() && Config.Item("UseQCombo").GetValue<bool>())
+      {
+
+          Q.CastOnUnit(target);
+
+        }
+      
       if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>())
       {
         E.Cast();
