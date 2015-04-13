@@ -155,8 +155,8 @@ namespace GangPlank___Yarr_
 
     private static void Combo()
     {
-      var target = (TargetSelector.GetTarget(1000, TargetSelector.DamageType.Physical) ??
-                     TargetSelector.GetTarget(1000, TargetSelector.DamageType.Magical)) ?? TargetSelector.GetTarget(1000, TargetSelector.DamageType.True);                    
+      var target = (TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical) ??
+                     TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical)) ?? TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.True);                    
 
       if (target == null)
       {
