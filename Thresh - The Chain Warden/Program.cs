@@ -56,13 +56,12 @@ namespace Thresh___The_Chain_Warden
       R = new Spell(SpellSlot.R, 450);
 
       Q.SetSkillshot(0.5f, 70f, 1900f, true, SkillshotType.SkillshotLine);
-      W.SetSkillshot(0f, 200f, 1750f, false, SkillshotType.SkillshotCircle);
-      E.SetSkillshot(0.3f, 60f, float.MaxValue, false, SkillshotType.SkillshotLine);
 
-      SpellList.Add(Q); 
+      SpellList.Add(Q);
       SpellList.Add(W);
       SpellList.Add(E);
       SpellList.Add(R);
+
 
       Config = new Menu("Thresh", "thresh_menu", true);
       var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
@@ -99,10 +98,12 @@ namespace Thresh___The_Chain_Warden
       Config.AddSubMenu(new Menu("Drawings", "Drawings"));
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawEnable", "Enable Drawing")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawQ", "Draw Q")).SetValue(true);
-      Config.SubMenu("Drawings").AddItem(new MenuItem("drawW", "Draw Q")).SetValue(true);
+      Config.SubMenu("Drawings").AddItem(new MenuItem("drawW", "Draw W")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawE", "Draw E")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawR", "Draw R")).SetValue(true);
       Config.AddToMainMenu();
+
+      OnBeforeAttack();
       Game.OnUpdate += OnGameUpdate;
       Drawing.OnDraw += OnDraw;
       AntiGapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
@@ -122,7 +123,7 @@ namespace Thresh___The_Chain_Warden
         if (Config.Item("drawW").GetValue<bool>())
         {
 
-          Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.Aqua, 1);
+          Render.Circle.DrawCircle(ObjectManager.Player.Position, W.Range, Color.Aqua, 1);
         }
         if (Config.Item("drawE").GetValue<bool>())
         {
@@ -143,15 +144,17 @@ namespace Thresh___The_Chain_Warden
     {
       if (W.IsReady())
       {
-        var NearAllies = Player.GetAlliesInRange(1500)
+        var NearAllies = Player.GetAlliesInRange(1200)
+                        .Where(x => !x.IsMe)
                         .Where(x => !x.IsEnemy)
                         .Where(x => !x.IsDead)
                         .Where(x => x.Distance(Player.Position) <= W.Range + 250)
                         .FirstOrDefault();
 
         if (NearAllies == null) return;
+
         W.Cast(NearAllies.Position);
-        
+
 
       }
 
@@ -193,7 +196,7 @@ namespace Thresh___The_Chain_Warden
         return;
       }
 
-      if (Config.Item("EGapCloser").GetValue<bool>() && E.IsReady() && E.IsInRange(gapcloser.Start)) 
+      if (Config.Item("EGapCloser").GetValue<bool>() && E.IsReady() && E.IsInRange(gapcloser.Start))
       {
         E.Cast(Player.Position.Extend(gapcloser.Sender.Position, 250));
       }
@@ -202,61 +205,75 @@ namespace Thresh___The_Chain_Warden
       {
       }
     }
+
+    private static void OnBeforeAttack()
+    {
+      Orbwalking.BeforeAttack += args =>
+      {
+        try
+        {
+          if (args.Target.IsValid<Obj_AI_Minion>() && Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed)
+          {
+            args.Process = false;
+          }
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine(e);
+        }
+      };
+    }
+
+    private static void OnAfterAttack(AttackableUnit unit, AttackableUnit target)
+    {
+
+    }
+
     private static void Harass()
     {
-      var targetQ = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-      if (targetQ == null) return;
+      var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
+
       if (Q.IsReady() && (Config.Item("UseQHarass").GetValue<bool>()))
       {
-        var Qprediction = Q.GetPrediction(targetQ);
+        var Qprediction = Q.GetPrediction(target);
+
+        if (Qprediction.Hitchance >= HitChance.High && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
         {
-          if (Qprediction.Hitchance >= HitChance.High && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
-          {
-            Q.Cast(Qprediction.CastPosition);
-          }
-
+          Q.Cast(Qprediction.CastPosition);
         }
-        var targetE = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-        if (targetE == null) return;
-        if (E.IsReady() && (Config.Item("UseEHarass").GetValue<bool>()))
-        {
 
-          E.Cast(targetE, true);
+      }
 
-
-        }
+      if (E.IsReady() && Config.Item("UseEHarass").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
+      {
+        E.Cast(target.Position.Extend(Player.Position, 250));
       }
     }
     private static void Combo()
     {
-      var targetQ = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
-      if (targetQ == null) return;
+      var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
+
       if (Q.IsReady() && (Config.Item("UseQCombo").GetValue<bool>()))
       {
-        var Qprediction = Q.GetPrediction(targetQ);
-        {
+        var Qprediction = Q.GetPrediction(target);
+        
           if (Qprediction.Hitchance >= HitChance.High && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
           {
             Q.Cast(Qprediction.CastPosition);
           }
 
         }
-        var targetE = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-        if (targetE == null) return;
-        if (E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
-        {
 
-              E.Cast(targetE, true);
-            
-          
-        }
-        var targetR = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
-        if (targetR == null) return;
-        if (R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()))
+        if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
+        {
+            E.Cast(target.Position.Extend(Player.Position, 250));
+          }
+
+        if (R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()) && Player.CountEnemiesInRange(R.Range) >= 1)
         {
           R.Cast();
         }
-      }
+      
 
     }
     private static void FlashQCombo()
@@ -273,9 +290,11 @@ namespace Thresh___The_Chain_Warden
             Player.Spellbook.CastSpell(FlashSlot, target.ServerPosition);
             Q.Cast(target.ServerPosition);
           }
-         
+
         }
       }
     }
   }
 }
+
+
