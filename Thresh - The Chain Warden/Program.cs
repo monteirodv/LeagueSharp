@@ -174,7 +174,7 @@ namespace Thresh___The_Chain_Warden
           Combo();
           break;
         case Orbwalking.OrbwalkingMode.Mixed:
-          //Harass();
+          Harass();
           break;
       }
 
