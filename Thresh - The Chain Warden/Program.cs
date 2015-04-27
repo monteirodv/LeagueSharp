@@ -27,8 +27,6 @@ namespace Thresh___The_Chain_Warden
 
     public static float FlashRange = 450f;
 
-    private static SpellSlot smiteSlot;
-
     private static List<Spell> SpellList = new List<Spell>();
 
     private static Menu Config;
@@ -75,9 +73,16 @@ namespace Thresh___The_Chain_Warden
       Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
+      Config.SubMenu("Combo").AddItem(new MenuItem("EPush", "E Push")).SetValue(true);
+      Config.SubMenu("Combo").AddItem(new MenuItem("EPull", "E Pull")).SetValue(false);
+
       Config.AddSubMenu(new Menu("Harass", "Harass"));
       Config.SubMenu("Harass").AddItem(new MenuItem("UseQHarass", "Use Q")).SetValue(true);
       Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E")).SetValue(true);
+
+      Config.AddSubMenu(new Menu("Flay", "Flay"));
+      Config.SubMenu("Flay").AddItem(new MenuItem("Push", "Use Q")).SetValue(new KeyBind("I".ToCharArray()[0], KeyBindType.Press));
+      Config.SubMenu("Flay").AddItem(new MenuItem("Pull", "Use Q")).SetValue(new KeyBind("U".ToCharArray()[0], KeyBindType.Press));
 
 
       Config.AddSubMenu(new Menu("Flash Hook", "Fhook"));
@@ -162,7 +167,14 @@ namespace Thresh___The_Chain_Warden
 
     private static void OnGameUpdate(EventArgs args)
     {
-
+      if (Config.Item("Push").GetValue<KeyBind>().Active)
+      {
+        Pull();
+      }
+      if (Config.Item("Pull").GetValue<KeyBind>().Active)
+      {
+        Push();
+      }
       if (Config.Item("FlashQCombo").GetValue<KeyBind>().Active)
       {
         FlashQCombo();
@@ -184,7 +196,7 @@ namespace Thresh___The_Chain_Warden
     }
     private static void OnPossibleToInterrupt(Obj_AI_Hero target, Interrupter2.InterruptableTargetEventArgs args)
     {
-      if (Config.Item("EInterrupt").GetValue<bool>())
+      if (Config.Item("EInterrupt").GetValue<bool>() && E.IsReady() && E.IsInRange(target))
       {
         E.Cast(target.ServerPosition);
       }
@@ -228,7 +240,23 @@ namespace Thresh___The_Chain_Warden
     {
 
     }
-
+    private static void Push()
+    {
+      var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
+      if (E.IsReady() && Player.Distance(target.Position) < E.Range)
+      {
+        E.Cast(target.Position - 400);
+      }
+    }
+    private static void Pull()
+    {
+      var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
+            if (E.IsReady() && Player.Distance(target.Position) < E.Range)
+      {
+        E.Cast(target.Position);
+      }
+    }
+    
     private static void Harass()
     {
       var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
@@ -246,7 +274,7 @@ namespace Thresh___The_Chain_Warden
 
       if (E.IsReady() && Config.Item("UseEHarass").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
       {
-        E.Cast(target.Position.Extend(Player.Position, 250));
+        E.Cast(target.Position - 400);
       }
     }
     private static void Combo()
@@ -266,7 +294,14 @@ namespace Thresh___The_Chain_Warden
 
         if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
         {
-            E.Cast(target.Position.Extend(Player.Position, 250));
+          if (Config.Item("EPush").GetValue<bool>())
+          {
+            E.Cast(target.Position - 400);
+          }
+          else
+          {
+            E.Cast(target.Position);
+          }
           }
 
         if (R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()) && Player.CountEnemiesInRange(R.Range) >= 1)
