@@ -78,7 +78,7 @@ namespace Dev_Essentials
       if (Config.Item("ActiveConsole").GetValue<KeyBind>().Active)
       {
         Console.WriteLine("Coordinates:" + Player.Position.ToString());
-        Console.Write("Gold Earned: " + Player.GoldEarned.ToString());
+        Console.Write("Gold Earned: " + Player.GoldTotal.ToString());
         Console.Write("Attack Delay: " + Player.AttackDelay.ToString());
         Console.Write("Chance of Critical: " + PlayerCrit);
         Console.Write("Wards Destroyed: ", Player.WardsKilled.ToString());
@@ -110,7 +110,7 @@ namespace Dev_Essentials
       Drawing.DrawText(10, 10, Color.White, "Coordinates:");
       Drawing.DrawText(10, 25, Color.White, Player.Position.ToString());
       Drawing.DrawText(10, 55, Color.White, "General Info:");
-      Drawing.DrawText(10, 70, Color.White, "Gold Earned: " + Player.GoldEarned.ToString());
+      Drawing.DrawText(10, 70, Color.White, "Gold Earned: " + Player.GoldTotal.ToString());
       Drawing.DrawText(10, 85, Color.White, "Attack Delay: " + Player.AttackDelay.ToString());
       Drawing.DrawText(10, 100, Color.White, "Chance of Critical: " + PlayerCrit);
       Drawing.DrawText(10, 130, Color.White, "Wards:");
