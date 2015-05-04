@@ -31,13 +31,7 @@ namespace Thresh___The_Chain_Warden
 
     private static Menu Config;
 
-    public static Obj_AI_Hero Player
-    {
-      get
-      {
-        return ObjectManager.Player;
-      }
-    }
+    public static Obj_AI_Hero Player = ObjectManager.Player;
 
     static void Main(string[] args)
     {
@@ -81,12 +75,12 @@ namespace Thresh___The_Chain_Warden
       Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E")).SetValue(true);
 
       Config.AddSubMenu(new Menu("Flay", "Flay"));
-      Config.SubMenu("Flay").AddItem(new MenuItem("Push", "Use Q")).SetValue(new KeyBind("I".ToCharArray()[0], KeyBindType.Press));
-      Config.SubMenu("Flay").AddItem(new MenuItem("Pull", "Use Q")).SetValue(new KeyBind("U".ToCharArray()[0], KeyBindType.Press));
+      Config.SubMenu("Flay").AddItem(new MenuItem("Push", "Use Q")).SetValue(new KeyBind('I, KeyBindType.Press));
+      Config.SubMenu("Flay").AddItem(new MenuItem("Pull", "Use Q")).SetValue(new KeyBind('U', KeyBindType.Press));
 
 
       Config.AddSubMenu(new Menu("Flash Hook", "Fhook"));
-      Config.SubMenu("Fhook").AddItem(new MenuItem("FlashQCombo", "Flash + Hook").SetValue(new KeyBind("G".ToCharArray()[0], KeyBindType.Press)));
+      Config.SubMenu("Fhook").AddItem(new MenuItem("FlashQCombo", "Flash + Hook").SetValue(new KeyBind('G', KeyBindType.Press)));
 
       Config.AddSubMenu(new Menu("Interrupts", "Interrupts"));
       Config.SubMenu("Interrupts").AddItem(new MenuItem("EInterrupt", "Interrupt Spells with E").SetValue(true));
@@ -96,7 +90,7 @@ namespace Thresh___The_Chain_Warden
       Config.SubMenu("GapClosers").AddItem(new MenuItem("RGapCloser", "Auto use R on Gap Closers").SetValue(false));
 
       Config.AddSubMenu(new Menu("Lantern Settings", "LanternSettings"));
-      Config.SubMenu("LanternSettings").AddItem(new MenuItem("ThrowLantern", "Throw Lantern to Ally")).SetValue(new KeyBind("T".ToCharArray()[0], KeyBindType.Press));
+      Config.SubMenu("LanternSettings").AddItem(new MenuItem("ThrowLantern", "Throw Lantern to Ally")).SetValue(new KeyBind('T', KeyBindType.Press));
       Config.SubMenu("LanternSettings").AddItem(new MenuItem("ThrowLanternNear", "Prioritize Nearest Ally")).SetValue(true);
       Config.SubMenu("LanternSettings").AddItem(new MenuItem("ThrowLanternLife", "Prioritize Low Ally")).SetValue(false);
 
@@ -151,7 +145,7 @@ namespace Thresh___The_Chain_Warden
       {
         var NearAllies = Player.GetAlliesInRange(1200)
                         .Where(x => !x.IsMe)
-                        .Where(x => !x.IsEnemy)
+                        //.Where(x => !x.IsEnemy) //For? Ally can't be enemy!
                         .Where(x => !x.IsDead)
                         .Where(x => x.Distance(Player.Position) <= W.Range + 250)
                         .FirstOrDefault();
@@ -313,7 +307,7 @@ namespace Thresh___The_Chain_Warden
     }
     private static void FlashQCombo()
     {
-      ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+      Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
       var target = TargetSelector.GetTarget(Q.Range + FlashRange - 25, TargetSelector.DamageType.Magical);
 
       if (Player.Distance3D(target) > Q.Range)
