@@ -145,7 +145,6 @@ namespace Thresh___The_Chain_Warden
       {
         var NearAllies = Player.GetAlliesInRange(1200)
                         .Where(x => !x.IsMe)
-                        //.Where(x => !x.IsEnemy) //For? Ally can't be enemy!
                         .Where(x => !x.IsDead)
                         .Where(x => x.Distance(Player.Position) <= W.Range + 250)
                         .FirstOrDefault();
@@ -234,12 +233,16 @@ namespace Thresh___The_Chain_Warden
     {
 
     }
+    static Vector2 V2E(Vector3 from, Vector3 direction, float distance)
+    {
+      return from.To2D() + distance * Vector3.Normalize(direction - from).To2D();
+    }
     private static void Push()
     {
       var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
       if (E.IsReady() && Player.Distance(target.Position) < E.Range)
       {
-        E.Cast(target.Position - 400);
+        E.Cast(V2E(target.Position, Player.Position, Player.Distance(target.Position) + 400));
       }
     }
     private static void Pull()
@@ -268,7 +271,7 @@ namespace Thresh___The_Chain_Warden
 
       if (E.IsReady() && Config.Item("UseEHarass").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
       {
-        E.Cast(target.Position - 400);
+        E.Cast(V2E(target.Position, Player.Position, Player.Distance(target.Position) + 400));
       }
     }
     private static void Combo()
@@ -290,7 +293,7 @@ namespace Thresh___The_Chain_Warden
         {
           if (Config.Item("EPush").GetValue<bool>())
           {
-            E.Cast(target.Position - 400);
+            E.Cast(V2E(target.Position, Player.Position, Player.Distance(target.Position) + 400));
           }
           else
           {
