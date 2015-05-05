@@ -75,8 +75,8 @@ namespace Thresh___The_Chain_Warden
       Config.SubMenu("Harass").AddItem(new MenuItem("UseEHarass", "Use E")).SetValue(true);
 
       Config.AddSubMenu(new Menu("Flay", "Flay"));
-      Config.SubMenu("Flay").AddItem(new MenuItem("Push", "Use Q")).SetValue(new KeyBind('I', KeyBindType.Press));
-      Config.SubMenu("Flay").AddItem(new MenuItem("Pull", "Use Q")).SetValue(new KeyBind('U', KeyBindType.Press));
+      Config.SubMenu("Flay").AddItem(new MenuItem("Push", "Push")).SetValue(new KeyBind('I', KeyBindType.Press));
+      Config.SubMenu("Flay").AddItem(new MenuItem("Pull", "Pull")).SetValue(new KeyBind('U', KeyBindType.Press));
 
 
       Config.AddSubMenu(new Menu("Flash Hook", "Fhook"));
