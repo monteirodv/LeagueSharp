@@ -35,8 +35,8 @@ namespace Wind_Up_Helper
      // Notifications.AddNotification("Wind-Up Helper by DanZ and Drunkenninja loaded!", 1000);
       Config = new Menu("Wind-Up", "winduphelper", true);
       Config.AddSubMenu(new Menu("On", "On"));
-      Config.AddSubMenu(new Menu("Orbwalking", "Orbwalking"));
-      Orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalking"));
+      //Config.AddSubMenu(new Menu("Orbwalking", "Orbwalking"));
+      //Orbwalker = new Orbwalking.Orbwalker(Config.SubMenu("Orbwalking"));
       Config.SubMenu("On").AddItem(new MenuItem("On", "On")).SetValue(true);
       Config.AddToMainMenu();
 
