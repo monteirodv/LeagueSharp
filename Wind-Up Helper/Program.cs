@@ -51,7 +51,7 @@ namespace Wind_Up_Helper
       if (Config.Item("On").GetValue<bool>())
       {
         {
-          windup = Game.Ping / 1.5;
+          windup = Game.Ping * 1.5;
         }
       }
     }
