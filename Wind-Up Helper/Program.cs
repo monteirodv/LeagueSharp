@@ -13,7 +13,7 @@ namespace Wind_Up_Helper
 {
   class Program
   {
-    public static float windup;
+    public static double windup;
 
     private static Menu Config;
 
@@ -51,7 +51,7 @@ namespace Wind_Up_Helper
       if (Config.Item("On").GetValue<bool>())
       {
         {
-          windup = Game.Ping / 1.5f;
+          windup = Game.Ping / 1.5;
         }
       }
     }
