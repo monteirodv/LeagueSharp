@@ -328,12 +328,8 @@ namespace Thresh___The_Chain_Warden
         Q.CastIfHitchanceEquals(target, HitChance.Dashing, true);
         Q.CastIfHitchanceEquals(target, HitChance.Immobile, true);
         Q.CastIfWillHit(target, 2, true);
-        if (target.Path.Count() < 2)
-        {
-          Q.CastIfHitchanceEquals(target, HitChance.VeryHigh, true);
-        }
         var Qprediction = Q.GetPrediction(target);
-        if (target.IsWindingUp && Qprediction.Hitchance >= HitChance.High)
+        if (target.IsWindingUp && Qprediction.Hitchance >= HitChance.VeryHigh)
         {
           Q.Cast(target.ServerPosition);
         }
