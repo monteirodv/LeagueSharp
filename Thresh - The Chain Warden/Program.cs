@@ -27,10 +27,14 @@ namespace Thresh___The_Chain_Warden
 
     public static float FlashRange = 450f;
 
+    private static float CheckInterval = 50f;
+    private static readonly Dictionary<int, List<Vector2>> _waypoints = new Dictionary<int, List<Vector2>>();
+    private static float _lastCheck = Environment.TickCount;
     private static List<Spell> SpellList = new List<Spell>();
 
     private static Menu Config;
-
+    public static Vector2 oWp;
+    public static Vector2 nWp;
     public static Obj_AI_Hero Player = ObjectManager.Player;
 
     static void Main(string[] args)
@@ -47,8 +51,7 @@ namespace Thresh___The_Chain_Warden
       E = new Spell(SpellSlot.E, 400);
       R = new Spell(SpellSlot.R, 450);
 
-      Q.SetSkillshot(0.5f, 70f, 1900f, true, SkillshotType.SkillshotLine);
-
+      Q.SetSkillshot(0.5f, 70f, 1500f, true, SkillshotType.SkillshotLine);
       SpellList.Add(Q);
       SpellList.Add(W);
       SpellList.Add(E);
@@ -96,6 +99,7 @@ namespace Thresh___The_Chain_Warden
 
       Config.AddSubMenu(new Menu("Drawings", "Drawings"));
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawEnable", "Enable Drawing")).SetValue(true);
+      Config.SubMenu("Drawings").AddItem(new MenuItem("drawQpred", "Draw Q line prediction")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawQ", "Draw Q")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawW", "Draw W")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawE", "Draw E")).SetValue(true);
@@ -109,8 +113,14 @@ namespace Thresh___The_Chain_Warden
       Interrupter2.OnInterruptableTarget += OnPossibleToInterrupt;
 
     }
+
+
+
+    
     private static void OnDraw(EventArgs args)
     {
+      var myPos = Drawing.WorldToScreen(Player.Position);
+
       if (Config.Item("drawEnable").GetValue<bool>())
       {
         if (Config.Item("drawQ").GetValue<bool>())
@@ -136,9 +146,41 @@ namespace Thresh___The_Chain_Warden
         }
 
       }
+      var enemy = TargetSelector.GetTarget(1500, TargetSelector.DamageType.Magical);
+          List<Vector2> waypoints = enemy.GetWaypoints();
+          for (int i = 0; i < waypoints.Count - 1; i++)
+          {
+
+
+            oWp = Drawing.WorldToScreen(waypoints[i].To3D());
+            nWp = Drawing.WorldToScreen(waypoints[i + 1].To3D());
+            if (!waypoints[i].IsOnScreen() && !waypoints[i + 1].IsOnScreen())
+            {
+              continue;
+            }
+            //Drawing.DrawLine(oWp[0], oWp[1], nWp[0], nWp[1], 3, System.Drawing.Color.Red);
+
+
+            //var pos = Player.Position + Vector3.Normalize(enemy.Position - Player.Position) * 100;
+            //pos = Player.Position + Vector3.Normalize(enemy.Position - Player.Position) * Player.Distance3D(enemy);
+            //var ePos = Drawing.WorldToScreen(pos);
+          
+        
+          if (Config.Item("drawQpred").GetValue<bool>())
+          {
+            Drawing.DrawLine(myPos.X - 25, myPos.Y - 25, nWp[0] - 10, nWp[1] - 25, 1, Color.Red);
+            Drawing.DrawLine(myPos.X + 25, myPos.Y + 25, nWp[0] + 10, nWp[1] + 25, 1, Color.Red);
+          }
+      }
     }
+      
+    
 
-
+    private static void DrawLine(float x, float y, float x2, float y2, float thickness, System.Drawing.Color color)
+    {
+    }
+  
+  
     private static void ThrowLantern()
     {
       if (W.IsReady())
@@ -160,33 +202,37 @@ namespace Thresh___The_Chain_Warden
 
     private static void OnGameUpdate(EventArgs args)
     {
-      if (Config.Item("Push").GetValue<KeyBind>().Active)
-      {
-        Pull();
-      }
-      if (Config.Item("Pull").GetValue<KeyBind>().Active)
-      {
-        Push();
-      }
-      if (Config.Item("FlashQCombo").GetValue<KeyBind>().Active)
-      {
-        FlashQCombo();
-      }
-      if (Config.Item("ThrowLantern").GetValue<KeyBind>().Active)
-      {
-        ThrowLantern();
-      }
-      switch (Orbwalker.ActiveMode)
-      {
-        case Orbwalking.OrbwalkingMode.Combo:
-          Combo();
-          break;
-        case Orbwalking.OrbwalkingMode.Mixed:
-          Harass();
-          break;
-      }
+      var targetz = TargetSelector.GetTarget(5000, TargetSelector.DamageType.Magical, true);
+      DrawLine(Player.Position.X, Player.Position.Y, targetz.Position.X, targetz.Position.Y, 2, Color.Red);
+        
+        if (Config.Item("Push").GetValue<KeyBind>().Active)
+        {
+          Pull();
+        }
+        if (Config.Item("Pull").GetValue<KeyBind>().Active)
+        {
+          Push();
+        }
+        if (Config.Item("FlashQCombo").GetValue<KeyBind>().Active)
+        {
+          FlashQCombo();
+        }
+        if (Config.Item("ThrowLantern").GetValue<KeyBind>().Active)
+        {
+          ThrowLantern();
+        }
+        switch (Orbwalker.ActiveMode)
+        {
+          case Orbwalking.OrbwalkingMode.Combo:
+            Combo();
+            break;
+          case Orbwalking.OrbwalkingMode.Mixed:
+            Harass();
+            break;
+        }
 
-    }
+      }
+    
     private static void OnPossibleToInterrupt(Obj_AI_Hero target, Interrupter2.InterruptableTargetEventArgs args)
     {
       if (Config.Item("EInterrupt").GetValue<bool>() && E.IsReady() && E.IsInRange(target))
@@ -248,12 +294,12 @@ namespace Thresh___The_Chain_Warden
     private static void Pull()
     {
       var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-            if (E.IsReady() && Player.Distance(target.Position) < E.Range)
+      if (E.IsReady() && Player.Distance(target.Position) < E.Range)
       {
         E.Cast(target.Position);
       }
     }
-    
+
     private static void Harass()
     {
       var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
@@ -277,35 +323,44 @@ namespace Thresh___The_Chain_Warden
     private static void Combo()
     {
       var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
-
       if (Q.IsReady() && (Config.Item("UseQCombo").GetValue<bool>()))
       {
+        Q.CastIfHitchanceEquals(target, HitChance.Dashing, true);
+        Q.CastIfHitchanceEquals(target, HitChance.Immobile, true);
+        Q.CastIfWillHit(target, 2, true);
+        if (target.Path.Count() < 2)
+        {
+          Q.CastIfHitchanceEquals(target, HitChance.VeryHigh, true);
+        }
         var Qprediction = Q.GetPrediction(target);
-        
-          if (Qprediction.Hitchance >= HitChance.High && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
-          {
-            Q.Cast(Qprediction.CastPosition);
-          }
-
+        if (target.IsWindingUp && Qprediction.Hitchance >= HitChance.High)
+        {
+          Q.Cast(target.ServerPosition);
+        }
+        if (Qprediction.Hitchance >= HitChance.VeryHigh && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
+        {
+          Q.Cast(Qprediction.CastPosition);
         }
 
-        if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
-        {
-          if (Config.Item("EPush").GetValue<bool>())
-          {
-            E.Cast(V2E(target.Position, Player.Position, Player.Distance(target.Position) + 400));
-          }
-          else
-          {
-            E.Cast(target.Position);
-          }
-          }
+      }
 
-        if (R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()) && Player.CountEnemiesInRange(R.Range) >= 1)
+      if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Player.Distance(target.Position) < E.Range)
+      {
+        if (Config.Item("EPush").GetValue<bool>())
         {
-          R.Cast();
+          E.Cast(V2E(target.Position, Player.Position, Player.Distance(target.Position) + 400));
         }
-      
+        else
+        {
+          E.Cast(target.Position);
+        }
+      }
+
+      if (R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()) && Player.CountEnemiesInRange(R.Range) >= 1)
+      {
+        R.Cast();
+      }
+
 
     }
     private static void FlashQCombo()
@@ -325,8 +380,10 @@ namespace Thresh___The_Chain_Warden
 
         }
       }
+
+        
     }
   }
-}
 
+}
 
