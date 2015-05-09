@@ -51,7 +51,7 @@ namespace Thresh___The_Chain_Warden
       E = new Spell(SpellSlot.E, 400);
       R = new Spell(SpellSlot.R, 450);
 
-      Q.SetSkillshot(0.5f, 70f, 1500f, true, SkillshotType.SkillshotLine);
+       Q.SetSkillshot(0.5f, 70f, 1900f, true, SkillshotType.SkillshotLine);
       SpellList.Add(Q);
       SpellList.Add(W);
       SpellList.Add(E);
@@ -327,16 +327,12 @@ namespace Thresh___The_Chain_Warden
       {
         Q.CastIfHitchanceEquals(target, HitChance.Dashing, true);
         Q.CastIfHitchanceEquals(target, HitChance.Immobile, true);
-        Q.CastIfWillHit(target, 2, true);
         var Qprediction = Q.GetPrediction(target);
-        if (target.IsWindingUp && Qprediction.Hitchance >= HitChance.VeryHigh)
-        {
-          Q.Cast(target.ServerPosition);
-        }
-        if (Qprediction.Hitchance >= HitChance.VeryHigh && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
-        {
-          Q.Cast(Qprediction.CastPosition);
-        }
+
+           if (Qprediction.Hitchance >= HitChance.High && Qprediction.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 2)
+           {
+             Q.Cast(Qprediction.CastPosition);
+           }
 
       }
 
