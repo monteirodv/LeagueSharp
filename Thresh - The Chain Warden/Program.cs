@@ -51,7 +51,7 @@ namespace Thresh___The_Chain_Warden
       E = new Spell(SpellSlot.E, 400);
       R = new Spell(SpellSlot.R, 450);
 
-      Q.SetSkillshot(0.5f, 70f, 1500f, true, SkillshotType.SkillshotLine);
+      Q.SetSkillshot(1.7f, 70f, 1500, true, SkillshotType.SkillshotLine);
       SpellList.Add(Q);
       SpellList.Add(W);
       SpellList.Add(E);
@@ -168,8 +168,8 @@ namespace Thresh___The_Chain_Warden
         
           if (Config.Item("drawQpred").GetValue<bool>())
           {
-            Drawing.DrawLine(myPos.X - 25, myPos.Y - 25, nWp[0] - 10, nWp[1] - 25, 1, Color.Red);
-            Drawing.DrawLine(myPos.X + 25, myPos.Y + 25, nWp[0] + 10, nWp[1] + 25, 1, Color.Red);
+            Drawing.DrawLine(myPos.X - 15, myPos.Y - 15, nWp[0] - 5, nWp[1] - 15, 1, Color.Red);
+            Drawing.DrawLine(myPos.X + 15, myPos.Y + 15, nWp[0] + 5, nWp[1] + 15, 1, Color.Red);
           }
       }
     }
