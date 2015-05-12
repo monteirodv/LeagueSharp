@@ -51,7 +51,6 @@ namespace Ezreal___The_prodigal_explorer
 
       Q.SetSkillshot(0.25f, 60f, 2000f, true, SkillshotType.SkillshotLine);
       W.SetSkillshot(0.25f, 80f, 1600f, false, SkillshotType.SkillshotLine);
-      Q.SetSkillshot(1.00f, 160f, 2000f, false, SkillshotType.SkillshotLine);
 
       Config = new Menu("Ezreal", "ezreal_menu", true);
       var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
