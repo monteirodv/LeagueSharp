@@ -47,8 +47,8 @@ namespace Thresh___The_Chain_Warden
       E = new Spell(SpellSlot.E, 400);
       R = new Spell(SpellSlot.R, 450);
 
-      Q.SetSkillshot(0.5f, 70f, 1900f, true, SkillshotType.SkillshotLine);
-      Q2.SetSkillshot(0.5f, 70f, 1900f, true, SkillshotType.SkillshotLine);
+      Q.SetSkillshot(0.5, 60f, 1200f, true, SkillshotType.SkillshotLine);
+      Q2.SetSkillshot(0.5, 60f, 1200, true, SkillshotType.SkillshotLine);
        
       Config = new Menu("Thresh", "thresh_menu", true);
       var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
