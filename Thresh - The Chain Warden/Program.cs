@@ -42,7 +42,7 @@ namespace Thresh___The_Chain_Warden
       FlashSlot = Player.GetSpellSlot("SummonerFlash");
 
       Q = new Spell(SpellSlot.Q, 1020);
-      Q2 = new Spell(SpellSlot.Q, 1020);
+      Q2 = new Spell(SpellSlot.Q, 1400);
       W = new Spell(SpellSlot.W, 950);
       E = new Spell(SpellSlot.E, 400);
       R = new Spell(SpellSlot.R, 450);
