@@ -354,16 +354,15 @@ namespace Thresh___The_Chain_Warden
 
       }
 
-      var target2 = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
-      if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>())
+      if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Vector3.Distance(target.Position, player.Position) < E.Range)
       {
         if (!Config.Item("EPush").GetValue<bool>())
         {
-          E.Cast(target2.Position.Extend(Player.Position, Vector3.Distance(target.Position, player.Position)+400));
+          E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, player.Position)+400));
         }
         else
         {
-          E.Cast(target2.Position);
+          E.Cast(target.Position);
         }
       }
 
