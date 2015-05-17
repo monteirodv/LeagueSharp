@@ -302,9 +302,10 @@ namespace Thresh___The_Chain_Warden
     private static void Pull()
     {
       var target = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
+
       if (E.IsReady() && Player.Distance(target.Position) < E.Range)
       {
-        E.Cast(V2E(target.Position, Player.Position, Player.Distance(target.Position) + 400));
+        E.Cast(target.Position.Extend(Player.Position, 250));
       }
     }
 
@@ -356,9 +357,9 @@ namespace Thresh___The_Chain_Warden
       var target2 = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
       if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>())
       {
-        if (!Config.Item("EPush").GetValue<bool>())
+        if (!Config.Item("EPull").GetValue<bool>())
         {
-          E.Cast(V2E(target2.Position, Player.Position, Player.Distance(target2.Position) + 400));
+          E.Cast(target2.Position.Extend(Player.Position, 250));
         }
         else
         {
