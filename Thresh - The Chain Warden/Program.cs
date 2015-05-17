@@ -62,7 +62,7 @@ namespace Thresh___The_Chain_Warden
       Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R")).SetValue(true);
-      Config.SubMenu("Combo").AddItem(new MenuItem("EPush", "E Push/Pull(on/off)")).SetValue(true);
+      Config.SubMenu("Combo").AddItem(new MenuItem("EPush", "E Push/Pull(on/off)")).SetValue(true);//get used to check out commit
 
       Config.AddSubMenu(new Menu("Harass", "Harass"));
       Config.SubMenu("Harass").AddItem(new MenuItem("UseQHarass", "Use Q")).SetValue(true);
@@ -357,7 +357,7 @@ namespace Thresh___The_Chain_Warden
       var target2 = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Magical);
       if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>())
       {
-        if (!Config.Item("EPull").GetValue<bool>())
+        if (!Config.Item("EPush").GetValue<bool>())
         {
           E.Cast(target2.Position.Extend(Player.Position, 250));
         }
@@ -385,7 +385,7 @@ namespace Thresh___The_Chain_Warden
         {
           Q2.UpdateSourcePosition(V2E(ObjectManager.Player.Position, target.Position, FlashRange).To3D());
           var predPos = Q2.GetPrediction(target);
-          if (predPos.Hitchance == HitChance.VeryHigh || predPos.Hitchance == HitChance.High) //What does "Madlife" mean?
+          if (predPos.Hitchance == HitChance.VeryHigh) //What does "Madlife" mean?
             return;
           Player.Spellbook.CastSpell(FlashSlot, predPos.CastPosition);
           Q.Cast(predPos.CastPosition);
