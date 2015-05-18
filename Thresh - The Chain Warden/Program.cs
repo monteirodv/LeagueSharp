@@ -305,7 +305,7 @@ namespace Thresh___The_Chain_Warden
 
       if (E.IsReady() && Player.Distance(target.Position) < E.Range)
       {
-        E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, player.Position)+400));
+        E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, Player.Position)+400));
       }
     }
 
@@ -354,11 +354,11 @@ namespace Thresh___The_Chain_Warden
 
       }
 
-      if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Vector3.Distance(target.Position, player.Position) < E.Range)
+      if (E.IsReady() && Config.Item("UseECombo").GetValue<bool>() && Vector3.Distance(target.Position, Player.Position) < E.Range)
       {
         if (!Config.Item("EPush").GetValue<bool>())
         {
-          E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, player.Position)+400));
+          E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, Player.Position)+400));
         }
         else
         {
