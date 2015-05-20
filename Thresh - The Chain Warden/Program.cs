@@ -384,7 +384,7 @@ namespace Thresh___The_Chain_Warden
         {
           Q2.UpdateSourcePosition(V2E(ObjectManager.Player.Position, target.Position, FlashRange).To3D());
           var predPos = Q2.GetPrediction(target);
-          if (predPos.Hitchance == HitChance.VeryHigh) //What does "Madlife" mean?
+          if (predPos.Hitchance != HitChance.VeryHigh) //What does "Madlife" mean?
             return;
           Player.Spellbook.CastSpell(FlashSlot, predPos.CastPosition);
           Q.Cast(predPos.CastPosition);
