@@ -158,7 +158,7 @@ namespace Ezreal___The_prodigal_explorer
 
           if (Wprediction.Hitchance >= HitChance.High)
           {
-            W.Cast(Qprediction.CastPosition);
+            W.Cast(Wprediction.CastPosition);
           }
         }
       }
