@@ -113,7 +113,7 @@ namespace Xerath___The_Magus_Ascendant
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawQ", "Draw Q")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawW", "Draw W")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawE", "Draw E")).SetValue(true);
-      Config.SubMenu("Drawings").AddItem(new MenuItem("drawkill", "Draw Ult damage on HP Bar(MAY CAUSE FPS DROPS, NEEDS FIX!)")).SetValue(true);
+      Config.SubMenu("Drawings").AddItem(new MenuItem("drawkill", "Draw Ult damage on HP Bar(MAY CAUSE FPS DROPS, NEEDS FIX!)")).SetValue(false);
       Config.AddToMainMenu(); 
 
       Game.OnUpdate += OnGameUpdate;
