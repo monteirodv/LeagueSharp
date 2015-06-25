@@ -41,14 +41,14 @@ namespace Thresh___The_Chain_Warden
       Notifications.AddNotification("Thresh - The Chain Warden by DanZ Loaded!", 1000);
       FlashSlot = Player.GetSpellSlot("SummonerFlash");
 
-      Q = new Spell(SpellSlot.Q, 1020);
+      Q = new Spell(SpellSlot.Q, 1100);
       Q2 = new Spell(SpellSlot.Q, 1400);
       W = new Spell(SpellSlot.W, 950);
       E = new Spell(SpellSlot.E, 400);
       R = new Spell(SpellSlot.R, 450);
 
-      Q.SetSkillshot(.5f, 60f, 1200f, true, SkillshotType.SkillshotLine);
-      Q2.SetSkillshot(.5f, 60f, 1200, true, SkillshotType.SkillshotLine);
+      Q.SetSkillshot(0.500f, 70f, 1900f, true, SkillshotType.SkillshotLine);
+      Q2.SetSkillshot(0.500f, 70f, 1900f, true, SkillshotType.SkillshotLine);
 
       Config = new Menu("Thresh", "thresh_menu", true);
       var targetSelectorMenu = new Menu("Target Selector", "Target Selector");
@@ -305,7 +305,7 @@ namespace Thresh___The_Chain_Warden
 
       if (E.IsReady() && Player.Distance(target.Position) < E.Range)
       {
-        E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, Player.Position)+400));
+        E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, Player.Position) + 400));
       }
     }
 
@@ -358,7 +358,7 @@ namespace Thresh___The_Chain_Warden
       {
         if (!Config.Item("EPush").GetValue<bool>())
         {
-          E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, Player.Position)+400));
+          E.Cast(target.Position.Extend(Player.Position, Vector3.Distance(target.Position, Player.Position) + 400));
         }
         else
         {
