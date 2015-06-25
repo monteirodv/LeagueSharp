@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using LeagueSharp;
@@ -75,7 +75,6 @@ namespace Xerath___The_Magus_Ascendant
       Config.SubMenu("Combo").AddItem(new MenuItem("UseQCombo", "Use Q")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseWCombo", "Use W")).SetValue(true);
       Config.SubMenu("Combo").AddItem(new MenuItem("UseECombo", "Use E")).SetValue(false);
-      Config.SubMenu("Combo").AddItem(new MenuItem("UseRCombo", "Use R if killable")).SetValue(true);
 
       Config.AddSubMenu(new Menu("Harass", "Harass"));
       Config.SubMenu("Harass").AddItem(new MenuItem("UseQHarass", "Use Q")).SetValue(true);
@@ -114,7 +113,7 @@ namespace Xerath___The_Magus_Ascendant
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawW", "Draw W")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawE", "Draw E")).SetValue(true);
       Config.SubMenu("Drawings").AddItem(new MenuItem("drawkill", "Draw Ult damage on HP Bar(MAY CAUSE FPS DROPS, NEEDS FIX!)")).SetValue(false);
-      Config.AddToMainMenu(); 
+      Config.AddToMainMenu();
 
       Game.OnUpdate += OnGameUpdate;
       Drawing.OnDraw += OnDraw;
@@ -147,7 +146,7 @@ namespace Xerath___The_Magus_Ascendant
         {
 
         }
-        
+
 
       }
 
@@ -188,49 +187,49 @@ namespace Xerath___The_Magus_Ascendant
         }
       }
     }
-   
+
     private static void Combo()
     {
       var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
 
-        if (Q.IsReady() && target.IsValid && (Config.Item("UseQCombo").GetValue<bool>()))
+      if (Q.IsReady() && target.IsValid && (Config.Item("UseQCombo").GetValue<bool>()))
+      {
+        if (!Q.IsCharging)
         {
-          if (!Q.IsCharging)
-          {
-            Q.StartCharging();
-          }
-          if (Q.IsCharging)
-          {
-            Q.CastIfHitchanceEquals(target, HitChance.VeryHigh, true);
-          }
+          Q.StartCharging();
         }
-        if (W.IsReady() && (Config.Item("UseWCombo").GetValue<bool>()))
+        if (Q.IsCharging)
         {
-          W.CastIfHitchanceEquals(target, HitChance.Dashing, true);
-          W.CastIfHitchanceEquals(target, HitChance.Immobile, true);
-          var Wprediction = W.GetPrediction(target);
-          if (Wprediction.Hitchance >= HitChance.VeryHigh)
-          {
-            W.Cast(Wprediction.CastPosition);
-          }
+          Q.CastIfHitchanceEquals(target, HitChance.VeryHigh, true);
         }
-        if (E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
-        {
-          E.CastIfHitchanceEquals(target, HitChance.Dashing, true);
-          E.CastIfHitchanceEquals(target, HitChance.Immobile, true);
-          var Eprediction = E.GetPrediction(target);
-          if (Eprediction.Hitchance >= HitChance.VeryHigh)
-          {
-            E.Cast(Eprediction.CastPosition);
-          }
-        }
-
-          if (target.Health < Player.GetSpellDamage(target, SpellSlot.R) * 3)
-            if (R.IsReady())
-              castR();
-        
       }
-    
+      if (W.IsReady() && (Config.Item("UseWCombo").GetValue<bool>()))
+      {
+        W.CastIfHitchanceEquals(target, HitChance.Dashing, true);
+        W.CastIfHitchanceEquals(target, HitChance.Immobile, true);
+        var Wprediction = W.GetPrediction(target);
+        if (Wprediction.Hitchance >= HitChance.VeryHigh)
+        {
+          W.Cast(Wprediction.CastPosition);
+        }
+      }
+      if (E.IsReady() && (Config.Item("UseECombo").GetValue<bool>()))
+      {
+        E.CastIfHitchanceEquals(target, HitChance.Dashing, true);
+        E.CastIfHitchanceEquals(target, HitChance.Immobile, true);
+        var Eprediction = E.GetPrediction(target);
+        if (Eprediction.Hitchance >= HitChance.VeryHigh)
+        {
+          E.Cast(Eprediction.CastPosition);
+        }
+      }
+
+      if (target.Health < Player.GetSpellDamage(target, SpellSlot.R) * 3)
+        if (R.IsReady())
+          castR();
+
+    }
+
     private static void Harass()
     {
       var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical);
@@ -391,7 +390,7 @@ namespace Xerath___The_Magus_Ascendant
       public static int Index;
       public static Vector3 Position;
     }
- 
+
 
     public static bool CastingR
     {
@@ -404,7 +403,7 @@ namespace Xerath___The_Magus_Ascendant
     }
     private static void Obj_AI_Hero_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args)
     {
-      if(Config.Item("BlockMove").GetValue<bool>())
+      if (Config.Item("BlockMove").GetValue<bool>())
       {
         if (CastingR)
         {
@@ -423,7 +422,7 @@ namespace Xerath___The_Magus_Ascendant
       {
         R.Cast(target, true);
       }
-    }   
+    }
     private static void OnGameUpdate(EventArgs args)
     {
       if (Config.Item("castR").GetValue<KeyBind>().Active)
