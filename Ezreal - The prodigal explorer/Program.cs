@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using LeagueSharp;
@@ -68,6 +68,9 @@ namespace Ezreal___The_prodigal_explorer
       Config.AddSubMenu(new Menu("Harass", "Harass"));
       Config.SubMenu("Harass").AddItem(new MenuItem("UseQHarass", "Use Q")).SetValue(true);
       Config.SubMenu("Harass").AddItem(new MenuItem("UseWHarass", "Use W")).SetValue(true);
+      
+      Config.AddSubMenu(new Menu("Ult", "Ult"));
+      Config.SubMenu("Ult").AddItem(new MenuItem("ForceRCast", "Force R")).SetValue(new KeyBind("G".ToCharArray()[0], KeyBindType.Press));
 
       Config.AddSubMenu(new Menu("Farming", "Farming"));
       Config.SubMenu("Farming").AddItem(new MenuItem("QLast", "Use Q to Last Hit")).SetValue(true);
@@ -169,10 +172,29 @@ namespace Ezreal___The_prodigal_explorer
       }
       if (R.IsReady() && (Config.Item("UseRCombo").GetValue<bool>()))
       {
-        if (target.Health < R.GetDamage(target))
-          R.Cast(target.ServerPosition);
+        R.CastIfHitchanceEquals(target, HitChance.Dashing, true);
+        R.CastIfHitchanceEquals(target, HitChance.Immobile, true);
+        var Rprediction = R.GetPrediction(target);
+
+        if (Rprediction.Hitchance >= HitChance.High)
+        {
+          R.Cast(Rprediction.CastPosition);
+        }
       }
 
+    }
+    private static void ForceR()
+    {
+      var target = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Magical);
+
+      R.CastIfHitchanceEquals(target, HitChance.Dashing, true);
+      R.CastIfHitchanceEquals(target, HitChance.Immobile, true);
+      var Rprediction = R.GetPrediction(target);
+
+      if (Rprediction.Hitchance >= HitChance.High)
+      {
+        R.Cast(Rprediction.CastPosition);
+      }
     }
     private static void Harass()
     {
@@ -284,6 +306,10 @@ namespace Ezreal___The_prodigal_explorer
     private static void OnGameUpdate(EventArgs args)
     {
       var target = TargetSelector.GetTarget(1300, TargetSelector.DamageType.Magical, true);
+      if (Config.Item("ForceRCast").GetValue<KeyBind>().Active)
+      {
+        ForceR();
+      }
       if (Config.Item("UseQKS").GetValue<bool>())
       {
         QKS();
