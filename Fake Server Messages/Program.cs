@@ -15,7 +15,7 @@ namespace Fake_Server_Messages
   {
     public static Obj_AI_Hero Player = ObjectManager.Player;
     private static Menu Config;
-    private static string premsg = "lol";
+    private static string premsg = "";
     private static float timestampX1;
     private static string sender = "Server Message";
     private static bool allX = true;
@@ -81,14 +81,14 @@ namespace Fake_Server_Messages
         var fakemsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         if (allX == true)
         {
-          string message = string.Format("/all {0}{1}  {2}  {3}", new string('-', 50 + sender.Length), sender, fakemsg);
+          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('-', 50 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
         }
         else if (allX == false)
         {
-          string message = string.Format("     {0}{1}  {2}  {3}", new string(' ', 50 + sender.Length), sender, fakemsg);
+          string message = string.Format("     {0}{1}  {2}  {3}", premsg, new string(' ', 50 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
