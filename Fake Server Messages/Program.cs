@@ -83,7 +83,7 @@ namespace Fake_Server_Messages
         var fakemsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         if (allX == true)
         {
-          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string(' ', 70 + sender.Length), sender, fakemsg);
+          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('⁠', 70 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
