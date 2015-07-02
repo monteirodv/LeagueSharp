@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using LeagueSharp;
@@ -49,8 +49,6 @@ namespace Fake_Server_Messages
     }
     private static void OnGameUpdate(EventArgs args)
     {
-      timestampX1 = Game.ClockTime / 60;
-      string timestampX = "[" + timestampX1.ToString() + "]";
     }
     private static void OnChatSender(GameChatEventArgs args)
     {
@@ -58,7 +56,7 @@ namespace Fake_Server_Messages
       {
         return;
       }
-      if (args.Message.StartsWith(".premsg"))
+      if (args.Message.StartsWith(".premessage"))
       {
         premsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         args.Process = false;
@@ -87,16 +85,18 @@ namespace Fake_Server_Messages
         {
           var message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string(' ', 70 + sender.Length), sender, fakemsg);
           Game.Say(message);
-        
+          args.Process = false;
+
         }
         else if (allX == false)
         {
-          var message = string.Format(" {0}{1}  {2}  {3}", premsg, new string(' ', 70 + sender.Length), sender, fakemsg);
+          var message = string.Format("     {0}{1}  {2}  {3}", premsg, new string(' ', 70 + sender.Length), sender, fakemsg);
           Game.Say(message);
+          args.Process = false;
+
         }
       }
 
     }
   }
 }
-
