@@ -33,8 +33,6 @@ namespace Fake_Server_Messages
       Config = new Menu("Fake Server Messages", "FSM", true);
       Config.SubMenu("Instructions:");
       Config.SubMenu("-------");
-      Config.SubMenu("-Use .premessage to configure the 1st line message                                                     Example: .premessage lol");
-      Config.SubMenu("--------");
       Config.SubMenu("-Use .msg to define the new line message                                                                 Example: .msg Server will shutdown in 5 minute)");
       Config.SubMenu("---------");
       Config.SubMenu("-Use .sender to configure the message sender.                                                           Example: .sender Phreak or sender Server Message");
@@ -83,14 +81,14 @@ namespace Fake_Server_Messages
         var fakemsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         if (allX == true)
         {
-          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('-', 50 + sender.Length), sender, fakemsg);
+          string message = string.Format("/all {0}{1}  {2}  {3}", new string('-', 50 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
         }
         else if (allX == false)
         {
-          string message = string.Format("     {0}{1}  {2}  {3}", premsg, new string(' ', 50 + sender.Length), sender, fakemsg);
+          string message = string.Format("     {0}{1}  {2}  {3}", new string(' ', 50 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
