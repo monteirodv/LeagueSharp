@@ -17,7 +17,7 @@ namespace Fake_Server_Messages
     private static Menu Config;
     private static string premsg = "";
     private static float timestampX1;
-    private static string sender = "";
+    private static string sender = "[Server Message]";
     private static bool allX = true;
     private static string message;
 
@@ -35,8 +35,6 @@ namespace Fake_Server_Messages
       Config.SubMenu("-------");
       Config.SubMenu("-Use .msg to define the new line message                                                                 Example: .msg Server will shutdown in 5 minute)");
       Config.SubMenu("---------");
-      Config.SubMenu("-Use .sender to configure the message sender.                                                           Example: .sender Phreak or sender Server Message");
-      Config.SubMenu("----------");
       Config.SubMenu("-Use .all 0 or 1 to configure if the message is sent to team or to all.                  Example: .timestamp 1 ");
       Config.SubMenu("-----------");
 
@@ -47,6 +45,7 @@ namespace Fake_Server_Messages
     }
     private static void OnGameUpdate(EventArgs args)
     {
+      //Game.Say(premsg.ToString());
     }
     private static void OnChatSender(GameChatEventArgs args)
     {
@@ -81,14 +80,14 @@ namespace Fake_Server_Messages
         var fakemsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         if (allX == true)
         {
-          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('-', 48 + sender.Length), sender, fakemsg);
+          var message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('-', 45 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
         }
         else if (allX == false)
         {
-          string message = string.Format("     {0}{1}  {2}  {3}", premsg, new string(' ', 48 + sender.Length), sender, fakemsg);
+          var message = string.Format("     {0}{1}  {2}  {3}", premsg, new string('-', 50 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
