@@ -81,14 +81,14 @@ namespace Fake_Server_Messages
         var fakemsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         if (allX == true)
         {
-          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('-', 50 + sender.Length), sender, fakemsg);
+          string message = string.Format("/all {0}{1}  {2}  {3}", premsg, new string('-', 48 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
         }
         else if (allX == false)
         {
-          string message = string.Format("     {0}{1}  {2}  {3}", premsg, new string(' ', 50 + sender.Length), sender, fakemsg);
+          string message = string.Format("     {0}{1}  {2}  {3}", premsg, new string(' ', 48 + sender.Length), sender, fakemsg);
           Game.Say(message);
           args.Process = false;
 
