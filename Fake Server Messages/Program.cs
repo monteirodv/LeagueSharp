@@ -55,7 +55,6 @@ namespace Fake_Server_Messages
       }
       if (args.Message.StartsWith(".premessage"))
       {
-        premsg = args.Message.Substring(args.Message.IndexOf(" ") + 1);
         args.Process = false;
       }
       if (args.Message.StartsWith(".sender"))
