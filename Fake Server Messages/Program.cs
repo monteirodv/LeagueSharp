@@ -17,7 +17,7 @@ namespace Fake_Server_Messages
     private static Menu Config;
     private static string premsg = "";
     private static float timestampX1;
-    private static string sender = "Server Message";
+    private static string sender = "";
     private static bool allX = true;
     private static string message;
 
